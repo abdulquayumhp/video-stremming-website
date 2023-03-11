@@ -8,48 +8,68 @@ import "./VideoSection.css"
 import { BiRightArrow, BiShareAlt } from "react-icons/bi";
 import { FaEye, FaHandPointRight, FaRegPlayCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 
 const VideosSection = () => {
 
-    const [data, setData] = useState([])
 
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [url, setUrl] = useState("")
+    const categoryUrl = `http://localhost:8000/allVideo`;
+
+    const { data: allVideo, isLoading, refetch } = useQuery({
+        queryKey: ["allVideo"],
+        queryFn: async () => {
+            const res = await fetch(categoryUrl);
+            const data = await res.json();
+            return data;
+        },
+    });
 
 
-    const [clickCount, setClickCount] = useState(0)
-    const [clickViewer, setClickViewer] = useState(0)
-
-
-    useEffect(() => {
-        fetch("http://localhost:8000/allVideo")
-            .then(res => res.json())
-            .then(data => setData(data))
-    }, [])
-
-    const handleLike = (e) => {
-        setClickCount(clickCount + 1)
-    }
 
     const handleView = (e) => {
-        setClickViewer(clickViewer + 1)
-
-
-        fetch(`http://localhost:8000/likeUpdate`, {
-            method: 'POST',
+        console.log(e)
+        fetch(`http://localhost:8000/VewerUpdate`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(message)
+            body: JSON.stringify({ e })
         })
             .then(response => response.json())
             .then(data => {
-
                 console.log('Success:', data);
-                input.reset()
                 refetch()
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+
+
+    const handleLike = (e) => {
+
+
+        fetch(`http://localhost:8000/likeUpdate`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                id: e.id,
+                title: e.title
+
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                refetch()
+
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -57,7 +77,7 @@ const VideosSection = () => {
 
     }
 
-
+    // console.log(allVideo)
 
 
     return (
@@ -70,20 +90,20 @@ const VideosSection = () => {
                     className="mySwiper"
                 >
                     {
-                        data.length &&
-                        data.map((allTest) => (
+                        allVideo &&
+                        allVideo.map((videos) => (
                             <div className="grid grid-cols-4">
                                 <div className='relative '>
                                     <SwiperSlide>
                                         <div className="hovered">
                                             <div className='gradient image-div '>
-                                                <img className=" p-5 w-[500px] h-[300px] sm:p-0  object-cover " src={allTest?.thamnel} alt="" />
+                                                <img className=" p-5 w-[500px] h-[300px] sm:p-0  object-cover " src={videos?.thamnel} alt="" />
                                             </div>
                                             <div className='text-left absolute top-20 left-10 flex gap-20'>
                                                 <div className='text-white '>
-                                                    <h1 className='font-bold pb-1'>{allTest?.videoTitle}</h1>
+                                                    <h1 className='font-bold pb-1'>{videos?.videoTitle}</h1>
                                                     <p className='pb-5'>1hr: 50mins</p>
-                                                    <Link to={`/details/${allTest?._id}`} onClick={handleView} href='3' className='flex items-center gap-5 bg-red-600 py-2 px-5 rounded'>
+                                                    <Link to={`/details/${videos?._id}`} onClick={() => handleView(videos?._id)} href='3' className='flex items-center gap-5 bg-red-600 py-2 px-5 rounded'>
                                                         <BiRightArrow />
                                                         <p href="#" className=' font-semibold' >Watch Video</p>
                                                     </Link>
@@ -96,12 +116,19 @@ const VideosSection = () => {
                                                     <div className='relative bg-white p-2 border-4 border-gray-400 rounded-full mb-2
                                                     '>
                                                         <FaEye className='text-black cursor-pointer bg-white' />
-                                                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{clickViewer}</p>
+                                                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{videos?.
+                                                            videoViewer.length
+                                                        }</p>
                                                     </div>
-                                                    <div onClick={handleLike} className='relative  bg-white p-2 border-4 border-gray-400 rounded-full mb-2
+                                                    <div onClick={() => handleLike({
+                                                        id: videos?._id,
+                                                        title: videos?.videoTitle
+                                                    })} className='relative  bg-white p-2 border-4 border-gray-400 rounded-full mb-2
                                                     '>
                                                         <FaHandPointRight className='text-black cursor-pointer bg-white' />
-                                                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{clickCount}</p>
+                                                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{videos?.
+                                                            videoLike.length
+                                                        }</p>
 
                                                     </div>
                                                 </div>
