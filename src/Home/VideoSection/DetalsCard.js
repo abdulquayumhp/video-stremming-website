@@ -28,19 +28,31 @@ const DetalsCard = () => {
         },
     });
 
+    console.log(VideoDetails)
 
     const handleLike = (e) => {
-        setClickCount(clickCount + 1)
+        fetch(`http://localhost:8000/likeUpdate`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                id: e.id,
+                title: e.title
+
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                refetch()
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     }
-
-    const handleView = (e) => {
-        const box = setClickViewer(clickViewer + 1)
-    }
-
-
-
-
-
 
 
 
@@ -48,7 +60,7 @@ const DetalsCard = () => {
 
 
     return (
-        <div className='w-[1400px] mx-auto'>
+        <div className='w-full px-5 sm:px-20'>
             <div className='border-8 border-white rounded-3xl  overflow-hidden my-5 relative'>
                 <ReactPlayer controls={true} url={VideoDetails?.videoLink} width='100%' height='600px' />
 
@@ -56,15 +68,18 @@ const DetalsCard = () => {
                 {/* icon  */}
                 <div className="absolute bottom-0 right-0 pt-5 px-5 flex gap-10 bg-gray-900 rounded-tl-2xl">
 
-                    <div onClick={handleView} className='relative bg-white p-2 border-4 border-gray-400 rounded-full mb-2
+                    <div className='relative bg-white p-2 border-4 border-gray-400 rounded-full mb-2
                              '>
-                        <FaEye className='text-black cursor-pointer bg-white' />
-                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{clickViewer}</p>
+                        <FaEye className='text-black bg-white' />
+                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{VideoDetails?.videoViewer?.length}</p>
                     </div>
-                    <div onClick={handleLike} className='relative  bg-white p-2 border-4 border-gray-400 rounded-full mb-2
+                    <div onClick={() => handleLike({
+                        id: VideoDetails?._id,
+                        title: VideoDetails?.videoTitle
+                    })} className='relative  bg-white p-2 border-4 border-gray-400 rounded-full mb-2
                                                     '>
                         <FaHandPointRight className='text-black cursor-pointer bg-white' />
-                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{clickCount}</p>
+                        <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{VideoDetails?.videoLike?.length}</p>
 
                     </div>
                 </div>

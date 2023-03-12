@@ -61,13 +61,13 @@ const DetailsCardMessage = ({ id, videoTitle }) => {
                 <h1 className='text-bold text-2xl pb-5'>Leave a Comment</h1>
                 <form onSubmit={handleDetailsMessage}>
                     <label htmlFor="text">
-                        <input type="text" name="message" className='outline-none border-2 rounded-2xl py-2 px-5 w-full' />
+                        <input type="text" placeholder='Enter Your Message' name="message" className='outline-none border-2 rounded-2xl py-2 px-5 w-full' />
                     </label>
                     <input type="submit" value="Submit" className='bg-black w-full rounded-2xl text-white py-1 my-3 cursor-pointer' />
                 </form>
             </div>
             <h1 className='pb-3'>All Message</h1>
-            <div className='border py-5 rounded-sm grid grid-cols-3 gap-5 '>
+            <div className='border py-5 rounded-sm grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 '>
                 {
                     Messages && Messages?.map(message => <div className='border m-3 border-gray-200 rounded-md'>
                         <h1>{message?.message}</h1>

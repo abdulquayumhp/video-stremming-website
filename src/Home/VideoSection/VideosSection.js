@@ -9,6 +9,7 @@ import { BiRightArrow, BiShareAlt } from "react-icons/bi";
 import { FaEye, FaHandPointRight, FaRegPlayCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import Share from '../../Share/Share';
 
 
 const VideosSection = () => {
@@ -81,18 +82,37 @@ const VideosSection = () => {
 
 
     return (
-        <div className="max-w-[1600px] mx-auto pt-10">
+        <div className="max-w-[1600px] mx-auto py-20">
             <>
                 <Swiper
-                    slidesPerView={4}
+                    breakpoints={
+                        {
+                            0: {
+                                slidesPerView: 1,
+                                spaceBetween: 10
+                            },
+                            600: {
+                                slidesPerView: 2,
+                                spaceBetween: 10
+                            },
+                            1000: {
+                                slidesPerView: 3,
+                                spaceBetween: 30
+                            },
+                            1400: {
+                                slidesPerView: 4,
+                                spaceBetween: 30
+                            },
+                        }
+                    }
                     spaceBetween={30}
                     navigation={true} modules={[Navigation]}
                     className="mySwiper"
                 >
                     {
                         allVideo &&
-                        allVideo.map((videos) => (
-                            <div className="grid grid-cols-4">
+                        allVideo.slice(1, 15).map((videos) => (
+                            <div className="">
                                 <div className='relative '>
                                     <SwiperSlide>
                                         <div className="hovered">
@@ -103,19 +123,16 @@ const VideosSection = () => {
                                                 <div className='text-white '>
                                                     <h1 className='font-bold pb-1'>{videos?.videoTitle}</h1>
                                                     <p className='pb-5'>1hr: 50mins</p>
-                                                    <Link to={`/details/${videos?._id}`} onClick={() => handleView(videos?._id)} href='3' className='flex items-center gap-5 bg-red-600 py-2 px-5 rounded'>
+                                                    <Link to={`/details/${videos?._id}`} onClick={() => handleView(videos?._id)} className='flex items-center gap-5 bg-red-600 py-2 px-5 rounded'>
                                                         <BiRightArrow />
                                                         <p href="#" className=' font-semibold' >Watch Video</p>
                                                     </Link>
                                                 </div>
                                                 <div className='iconDiv '>
-                                                    <div className='bg-white p-2 border-4 border-gray-400 rounded-full mb-2
+                                                    <Share />
+                                                    <div className='relative bg-white p-2 border-4 border-gray-400 w-10 rounded-full mb-2
                                                     '>
-                                                        <BiShareAlt className='text-black cursor-pointer bg-white' />
-                                                    </div>
-                                                    <div className='relative bg-white p-2 border-4 border-gray-400 rounded-full mb-2
-                                                    '>
-                                                        <FaEye className='text-black cursor-pointer bg-white' />
+                                                        <FaEye className='text-black cursor-pointer bg-white ' />
                                                         <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{videos?.
                                                             videoViewer.length
                                                         }</p>
@@ -123,9 +140,9 @@ const VideosSection = () => {
                                                     <div onClick={() => handleLike({
                                                         id: videos?._id,
                                                         title: videos?.videoTitle
-                                                    })} className='relative  bg-white p-2 border-4 border-gray-400 rounded-full mb-2
+                                                    })} className='relative  bg-white p-2 border-4 border-gray-400 w-10 rounded-full mb-2
                                                     '>
-                                                        <FaHandPointRight className='text-black cursor-pointer bg-white' />
+                                                        <FaHandPointRight className='text-black cursor-pointer bg-white ' />
                                                         <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{videos?.
                                                             videoLike.length
                                                         }</p>
