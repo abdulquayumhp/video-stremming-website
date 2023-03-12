@@ -17,7 +17,7 @@ const DetalsCard = () => {
     const params = useParams();
 
 
-    const categoryUrl = `http://localhost:8000/singleVideo/${params.id}`;
+    const categoryUrl = `https://job-task-vide-streming.vercel.app/singleVideo/${params.id}`;
 
     const { data: VideoDetails, isLoading, refetch } = useQuery({
         queryKey: ["singleVideo", params.id],
@@ -28,10 +28,10 @@ const DetalsCard = () => {
         },
     });
 
-    console.log(VideoDetails)
+    // console.log(VideoDetails)
 
     const handleLike = (e) => {
-        fetch(`http://localhost:8000/likeUpdate`, {
+        fetch(`https://job-task-vide-streming.vercel.app/likeUpdate`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -7,7 +7,7 @@ import { BiRightArrow } from 'react-icons/bi';
 
 const HomeBanner = () => {
 
-    const categoryUrl = `http://localhost:8000/allVideo`;
+    const categoryUrl = `https://job-task-vide-streming.vercel.app/allVideo`;
 
     const { data: BannerVideo, isLoading, refetch } = useQuery({
         queryKey: ["allVideo"],
@@ -21,8 +21,8 @@ const HomeBanner = () => {
     return (
         <div>
             {
-                BannerVideo && BannerVideo?.slice(0, 1).map(banner => <div className='h-screen w-full backgroundImage'>
-                    <div className='flex pt-36 sm:pt-48 pl-10 pr-5 md:pr-0 md:pl-36 text-white h-[800px]'>
+                BannerVideo && BannerVideo?.slice(0, 1).map(banner => <div className='h-screen w-full backgroundImage' key={banner._id}>
+                    <div className='flex pt-36 sm:pt-48 pl-10 pr-5 md:pr-0 md:pl-36 text-white h-[800px]' >
                         <div className='w-[800px]' >
                             <h1 className='text-3xl lg:text-6xl font-bold'>{banner?.videoTitle}</h1>
                             <div className='flex items-center gap-5 pb-5 flex-wrap'>

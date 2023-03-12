@@ -13,7 +13,7 @@ const DetailsCardMessage = ({ id, videoTitle }) => {
 
 
 
-    const categoryUrl = `http://localhost:8000/message/${id}`;
+    const categoryUrl = `https://job-task-vide-streming.vercel.app/message/${id}`;
 
     const { data: Messages, isLoading, refetch } = useQuery({
         queryKey: ["message", id],
@@ -35,7 +35,7 @@ const DetailsCardMessage = ({ id, videoTitle }) => {
             videoTitle
 
         }
-        fetch(`http://localhost:8000/message`, {
+        fetch(`https://job-task-vide-streming.vercel.app/message`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

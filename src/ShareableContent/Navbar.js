@@ -7,11 +7,11 @@ const Navbar = () => {
     const [data, setData] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8000/notification")
+        fetch("https://job-task-vide-streming.vercel.app/notification")
             .then(res => res.json())
             .then(data => setData(data))
     }, [])
-    console.log(data.length)
+    // console.log(data.length)
 
     return (
         <div className='bg-blue-900 py-5 mx-auto w-full '>

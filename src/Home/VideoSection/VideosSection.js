@@ -15,8 +15,8 @@ import Share from '../../Share/Share';
 const VideosSection = () => {
 
 
-
-    const categoryUrl = `http://localhost:8000/allVideo`;
+    // home page all video call 
+    const categoryUrl = `https://job-task-vide-streming.vercel.app/allVideo`;
 
     const { data: allVideo, isLoading, refetch } = useQuery({
         queryKey: ["allVideo"],
@@ -28,10 +28,10 @@ const VideosSection = () => {
     });
 
 
-
+    // handle video viwer 
     const handleView = (e) => {
         console.log(e)
-        fetch(`http://localhost:8000/VewerUpdate`, {
+        fetch(`https://job-task-vide-streming.vercel.app/VewerUpdate`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,11 +50,9 @@ const VideosSection = () => {
     }
 
 
-
+    // handle like click 
     const handleLike = (e) => {
-
-
-        fetch(`http://localhost:8000/likeUpdate`, {
+        fetch(`https://job-task-vide-streming.vercel.app/likeUpdate`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -112,13 +110,17 @@ const VideosSection = () => {
                     {
                         allVideo &&
                         allVideo.slice(1, 15).map((videos) => (
-                            <div className="">
-                                <div className='relative '>
-                                    <SwiperSlide>
+                            <div className="" key={videos._id}>
+                                <div className='relative ' key={videos._id}>
+                                    <SwiperSlide key={videos._id}>
                                         <div className="hovered">
+
+                                            {/* vide image  */}
                                             <div className='gradient image-div '>
                                                 <img className=" p-5 w-[500px] h-[300px] sm:p-0  object-cover " src={videos?.thamnel} alt="" />
                                             </div>
+
+                                            {/* video iformation  */}
                                             <div className='text-left absolute top-20 left-10 flex gap-20'>
                                                 <div className='text-white '>
                                                     <h1 className='font-bold pb-1'>{videos?.videoTitle}</h1>
@@ -128,11 +130,12 @@ const VideosSection = () => {
                                                         <p href="#" className=' font-semibold' >Watch Video</p>
                                                     </Link>
                                                 </div>
+                                                {/* absoult icon like view and share  */}
                                                 <div className='iconDiv '>
                                                     <Share />
                                                     <div className='relative bg-white p-2 border-4 border-gray-400 w-10 rounded-full mb-2
                                                     '>
-                                                        <FaEye className='text-black cursor-pointer bg-white ' />
+                                                        <FaEye className='text-black  bg-white ' />
                                                         <p className='absolute -top-4 -right-4 p-px px-2  rounded-full bg-black text-white'>{videos?.
                                                             videoViewer.length
                                                         }</p>
@@ -154,6 +157,7 @@ const VideosSection = () => {
                                     </SwiperSlide>
                                 </div>
                             </div>
+
 
                         ))
                     }
